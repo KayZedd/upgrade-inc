@@ -57,12 +57,13 @@ Or Play it online
 
 ## TODO 📋
 
-- [ ] **Improve UI** 🎨: Enhance the overall visual experience.
-- [ ] **Add more upgrades** 🔧: New upgrades to boost the gameplay.
-- [ ] **Add sound effects** 🔊: Make the game more engaging with click sounds and upgrade sounds.
-- [ ] **Add Minigames 🏃‍♂️**: Add some minigames to add some difficulty
-- [ ] **Fix Economy 💰**: Cuz its kinda bad
-- [ ] **Fix Tooltips** 🛠️: Fix them.
+- [x] **Improve UI** 🎨: Enhance the overall visual experience.
+- [ ] (10%) **Add more upgrades** 🔧: New upgrades to boost the gameplay.
+- [ ] (50%) **Add sound effects** 🔊: Make the game more engaging with click sounds and upgrade sounds.
+- [ ] (0%) **Add Minigames 🏃‍♂️**: Add some minigames to add some difficulty
+- [ ] (30%) **Add more stats 🔨**: New stats to upgrade
+- [ ] (10%) **Add more achievements 👽**: New achievements to unlock
+- [ ] (30%) **Fix Economy 💰**: Cuz its kinda bad
 
 ## License 📜
 
