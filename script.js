@@ -1,104 +1,205 @@
+//todo:
+// - add more upgrades (10%) - more to come
+// - add more achivements (10%) - more to come
+// - revamp level system (40%)
+// - add more stats (30%)
+// - add more minigames (0%)
+// - add more settings (0%)
+
+
 
 var stats = {
     money: 0,
-    moneyPerSecond: 0,
-    moneyPerClick: 1,
-    allowedCPS: 10,
+    squareValue: 1,
+    squareMultiplier: 1,
     tickDelay: 1000,
     upgPriceMultiplier: 1.2,
-    clickCritChance: 0.1,
+    squareCritChance: 0.1,
     diamonds: 0,
+    spawnLimit: 15,
 };
 
 var leveling = {
     level: 0,
     exp: 0,
     expToNext: 100,
+    expMultiplier: 1.1,
     levelMultiplier: 1.1,
     maxLevel: 100,
 }
 
 var upgrades = {
     1: {
-        name: "Better Mouse",
-        description: "Increases money per click by 10",
+        name: "Square Power",
+        description: "squareValue++",
         price: 10,
         limit: 10,
-        bought: false,
-        effect: "function() { stats.moneyPerClick += 10; }"
+        minLevel: 0,
+        number: 0,
+        effect: "function() { stats.squareValue += 1; }"
     },
     2: {
-        name: "Better Air",
-        description: "Increases money per second by 10",
+        name: "Better Squares",
+        description: "squareLimit++",
         price: 10,
         limit: 10,
-        bought: false,
-        effect: "function() { stats.moneyPerSecond += 10; }"
+        minLevel: 0,
+        number: 0,
+        effect: "function() { stats.spawnLimit += 1; }"
     },
     3: {
-        name: "Sweat Metter",
-        description: "Increases allowed clicks per second by 1",
-        price: 10,
-        limit: 20,
-        bought: false,
-        effect: "function() { stats.allowedCPS += 1; }"
-    },
-    4: {
         name: "Stopwatch",
-        description: "Decreases tick delay by 100ms",
+        description: "tickDelay--",
         price: 10,
         limit: 5,
-        bought: false,
+        minLevel: 0,
+        number: 0,
         effect: "function() { stats.tickDelay -= 100; setTickDelay(stats.tickDelay); }"
     },
-    5: {
-        name: "Tab Name",
-        description: "Increases money per click by 10, also changes the tab name",
+    4: {
+        name: "UpgradeOverhaul",
+        description: "squareValue++\n+tabName",
         price: 1000,
         limit: 1,
-        bought: false,
-        effect: "function() { stats.moneyPerClick += 10; document.title = 'Upgrade INC ';  var favicon = document.createElement('link'); favicon.rel = 'icon'; favicon.href = 'assets/favicon-32x32.png'; document.head.appendChild(favicon); }"
+        minLevel: 5,
+        number: 0,
+        effect: "function() { stats.squareValue += 10; document.title = 'Upgrade INC ';  var favicon = document.createElement('link'); favicon.rel = 'icon'; favicon.href = 'assets/favicon-32x32.png'; document.head.appendChild(favicon); }"
+    },
+    5: {
+        name: "Expirienced Player",
+        description: "expGain++",
+        price: 1000,
+        limit: 10,
+        minLevel: 10,
+        number: 0,
+        effect: "function() { leveling.expMultiplier += 0.1; }"
     },
     6: {
-        name: "UI Revamp",
-        description: "Increases money per second by 10, also revamps the UI",
-        price: 10000,
-        limit: 1,
-        bought: false,
-        effect: "function() { stats.moneyPerSecond += 10; }"
-    },
-    7: {
-        name: "Golden Click",
-        description: "Inceases critical chance by 5%",
+        name: "Golden Squares",
+        description: "squareCritChance++",
         price: 100,
         limit: 10,
-        bought: false,
-        effect: "function() { stats.clickCritChance += 0.05; }"
-    }
+        minLevel: 5,
+        number: 0,
+        effect: "function() { stats.squareCritChance += 0.05; }"
+    },
+    7: {
+        name: "SquareMatics",
+        description: "squareMultiplier*2",
+        price: 100,
+        limit: 10,
+        minLevel: 5,
+        number: 0,
+        effect: "function() { stats.squareMultiplier *= 2; }"
+    },
 };
 
 var config = {
-    numberType : "round",
+    numberType : "suffix",
+    volume: 0.5,
 }
 
 var achivements = {
     1: {"name": "First Click", "description": "Click the button for the first time", "reward": 10, "done": false},
     2: {"name": "First Upgrade", "description": "Buy your first upgrade", "reward": 10, "done": false},
     3: {"name": "First Level", "description": "Reach level 1", "reward": 10, "done": false},
+    4: {"name": "First Diamond", "description": "Earn your first diamond", "reward": 10, "done": false},
 }
+
+document.addEventListener('mousedown', function(event) {
+    if (event.detail > 1) {
+      event.preventDefault();
+    }
+  }, false);
+
+function showOptions() {
+    document.querySelector('.options').style.display = 'flex';
+    document.querySelector('.options').style.transform = 'translate(-50%, -50%) scale(0)';
+    document.querySelector('.options').style.transition = 'transform 0.3s ease-in-out';
+    setTimeout(function() {
+        document.querySelector('.options').style.transform = 'translate(-50%, -50%) scale(1)';
+    }, 100);
+}
+
+function hideOptions() {
+    document.querySelector('.options').style.transform = 'translate(-50%, -50%) scale(0)';
+    document.querySelector('.options').style.transition = 'transform 0.3s ease-in-out';
+    setTimeout(function() {
+        document.querySelector('.options').style.display = 'none';
+    }, 300);
+}
+
+
+function showAchivements() {
+    document.querySelector('.achievements-modal').style.display = 'block';
+    document.querySelector('.achievements-modal').style.transform = 'translate(-50%, -50%) scale(0)';
+    document.querySelector('.achievements-modal').style.transition = 'transform 0.3s ease-in-out';
+    setTimeout(function() {
+        document.querySelector('.achievements-modal').style.transform = 'translate(-50%, -50%) scale(1)';
+    }, 100);
+}
+
+function hideAchivements() {
+    document.querySelector('.achievements-modal').style.transform = 'translate(-50%, -50%) scale(0)';
+    document.querySelector('.achievements-modal').style.transition = 'transform 0.3s ease-in-out';
+    setTimeout(function() {
+        document.querySelector('.achievements-modal').style.display = 'none';
+    }, 300);
+}
+
+var spawnCount = 0;
+
+function spawnSquare() {
+    if (spawnCount >= stats.spawnLimit) {
+        return;
+    }
+    var square = document.createElement('div');
+    var gameGrid = document.querySelector('.gameGrid');
+    square.className = 'square';
+    square.style.width = '50px';
+    square.style.height = '50px';
+    square.style.position = 'absolute';
+
+    var x = Math.random() * (gameGrid.clientWidth - 50);
+    var y = Math.random() * (gameGrid.clientHeight - 50);
+    square.style.left = x + 'px';
+    square.style.top = y + 'px';
+
+    gameGrid.appendChild(square);
+    spawnCount++;
+    updateStats();
+}
+
+
+document.addEventListener('click', event => {
+    if (event.target.classList.contains('square')) {
+        event.target.remove();
+        if (Math.random() < stats.critChance) {
+            gainMoney(stats.squareValue * 2);
+        } else {
+            gainMoney(stats.squareValue);
+        }
+        spawnCount--;
+        updateStats();
+    }
+});
 
 function checkAchievements() {
     if (!achivements[1].done && stats.money >= 1) {
         addAchivement(1);
         achivements[1].done = true;
     }
-    if (!achivements[2].done && upgrades[1].bought == true) {
+    if (!achivements[2].done && Object.values(upgrades).some(upgrade => upgrade.number > 0)) {
         addAchivement(2);
         achivements[2].done = true;
     }
-    if (!achivements[3].done && leveling.level == 1) {
+    if (!achivements[3].done && leveling.level >= 1) {
         addAchivement(3);
         achivements[3].done = true;
+    }
+    if (!achivements[4].done && stats.diamonds >= 1) {
+        addAchivement(4);
+        achivements[4].done = true;
     }
 }
 
@@ -114,58 +215,46 @@ showAchievementPopup(i);
 
 function showAchievementPopup(i) {
     const achievement = achivements[i];
+    const notificationBox = document.querySelector('.notification-box');
     const popup = document.createElement('div');
-    popup.className = 'achievement-popup';
+    popup.className = 'notification';
     popup.innerHTML = `
         <h3>${achievement.name}</h3>
         <p>${achievement.description}</p>
         <p>Reward: ${achievement.reward} Diamonds</p>
-        <button onclick="this.parentElement.style.display='none'">Close</button>
-        <div class="achievement-prog">
+        <button onclick="this.parentElement.remove()">Close</button>
+        <div class="notification-prog">
             <progress value="0" max="100"></progress>
         </div>
     `;
-    document.body.appendChild(popup);
+    notificationBox.appendChild(popup);
 
-    const progress = popup.querySelector('.achievement-prog progress');
-    let timeLeft = 5000;
+    const progress = popup.querySelector('.notification-prog progress');
+    const startTime = performance.now();
     const interval = setInterval(() => {
-        progress.value = Math.round((1 - timeLeft / 5000) * 100);
-        timeLeft -= 100;
-        if (timeLeft <= 0) {
+        const timeElapsed = performance.now() - startTime;
+        progress.value = Math.round((timeElapsed / 5000) * 100);
+        if (timeElapsed >= 5000) {
             clearInterval(interval);
-            popup.style.display = 'none';
+            popup.remove();
         }
-    }, 100);
+    }, 16);
 }
 
-function showAchivements() {
-    const popup = document.createElement('div');
-    popup.className = 'achievements';
-    popup.innerHTML = `
-        <h3>Achivements</h3>
-        ${Object.keys(achivements).map(i => `
-            <div class="achievement">
-                <h4>${achivements[i].name}</h4>
-                <p>${achivements[i].description}</p>
-                <p>Reward: ${achivements[i].reward} Diamonds</p>
-                <p>${achivements[i].done ? 'Done' : 'Not done'}</p>
-            </div>
-        `).join('')}
-        <button onclick="document.querySelector('.achievements').remove()">Close</button>
-    `;
-    const achievementsDiv = document.createElement('div');
-    achievementsDiv.className = 'achievements';
-    document.body.appendChild(achievementsDiv);
-    achievementsDiv.appendChild(popup);
-}
 
 document.addEventListener("DOMContentLoaded", function() {
     init();
+    document.querySelector('.options').style.display = 'none';
+
 });
+
+const music = new Audio('assets/soundtrack.mp3');
+music.loop = true;
+music.play().catch(error => console.error('Failed to play music:', error));
 
 function init() {
     loadUpgrades();
+    loadAchivements();
     updateStats();
 }
 
@@ -182,106 +271,97 @@ function loadUpgrades() {
     var upgradesDiv = document.getElementsByClassName("upgrades")[0];
     if (upgradesDiv) {
         Object.keys(upgrades).forEach(function(i) {
-            var upgradeContainer = document.createElement("div");
-            upgradeContainer.className = "upgrade";
-            upgradeContainer.id = "upg" + i;
-            
-            var upgradeButton = document.createElement("button");
-            upgradeButton.className = "upgrade";
-            upgradeButton.id = "upgrade" + i;
-            upgradeButton.onclick = function() { buyUpgrade(i); };
-            upgradeButton.innerHTML = upgrades[i].name + " | " + upgrades[i].price + "$";
-            
-            var tooltip = createTooltip(upgrades[i].description);
-            upgradeButton.onmouseover = function(event) {
-                showTooltip(tooltip, event);
-            };
-            upgradeButton.onmouseout = function() {
-                hideTooltip(tooltip);
-            };
+            if (!document.getElementById("upg" + i)) {
+                var upgradeContainer = document.createElement("div");
+                upgradeContainer.className = "upgrade";
+                upgradeContainer.id = "upg" + i;
+                upgradeContainer.onclick = function() { buyUpgrade(i); };
 
-            upgradeContainer.appendChild(upgradeButton);
-            upgradeContainer.appendChild(tooltip);
-            upgradesDiv.appendChild(upgradeContainer);
+                var upgradeImage = document.createElement("img");
+                upgradeImage.src = "assets/favicon-32x32.png";
+                upgradeImage.alt = "Upgrade Image";
+                upgradeContainer.appendChild(upgradeImage);
+
+                var upgradeName = document.createElement("p");
+                upgradeName.innerText = upgrades[i].name;
+                upgradeContainer.appendChild(upgradeName);
+
+                var upgradeDescription = document.createElement("p");
+                upgradeDescription.innerText = upgrades[i].description;
+                upgradeContainer.appendChild(upgradeDescription);
+
+                var upgradePrice = document.createElement("p");
+                upgradePrice.innerText = "Price: $" + upgrades[i].price;
+                upgradeContainer.appendChild(upgradePrice);
+
+                var upgradeProgress = document.createElement("progress");
+                upgradeProgress.id = "upg" + i + "Progress";
+                upgradeProgress.max = upgrades[i].limit;
+                upgradeProgress.value = upgrades[i].number;
+                upgradeContainer.appendChild(upgradeProgress);
+
+                if (upgrades[i].minLevel > leveling.level || upgrades[i].number >= upgrades[i].limit) {
+                    return;
+                }
+
+                upgradesDiv.appendChild(upgradeContainer);
+            }
+        });
+    }
+    updateStats();
+}
+
+function loadAchivements() {
+    var achivementsDiv = document.getElementById("achievements-modal");
+    if (achivementsDiv) {
+        Object.keys(achivements).forEach(function(i) {
+            var achivementContainer = document.createElement("div");
+            achivementContainer.className = "achivement";
+            achivementContainer.id = "ach" + i;
+
+            var achivementImage = document.createElement("img");
+            achivementImage.src = "assets/favicon-32x32.png";
+            achivementImage.alt = "Achivement Image";
+            achivementContainer.appendChild(achivementImage);
+
+            var achivementName = document.createElement("p");
+            achivementName.innerText = achivements[i].name;
+            achivementContainer.appendChild(achivementName);
+
+            var achivementDescription = document.createElement("p");
+            achivementDescription.innerText = achivements[i].description;
+            achivementContainer.appendChild(achivementDescription);
+
+            var achivementReward = document.createElement("p");
+            achivementReward.innerText = "Reward: " + achivements[i].reward + " Diamonds";
+            achivementContainer.appendChild(achivementReward);
+
+            var achivementDone = document.createElement("p");
+            achivementDone.id = "ach" + i + "Done";
+            if (achivements[i].done) {
+                achivementDone.innerText = "Done";
+            } else {
+                achivementDone.innerText = "Not done";
+            }
+            achivementContainer.appendChild(achivementDone);
+
+            achivementsDiv.appendChild(achivementContainer);
+
         });
     }
 }
 
-function createTooltip(description) {
-    var tooltip = document.createElement("div");
-    tooltip.className = "tooltip";
-    tooltip.innerHTML = description;
-    tooltip.style.position = "absolute";
-    tooltip.style.visibility = "hidden";
-    tooltip.style.opacity = "0";
-    tooltip.style.transition = "opacity 0.3s ease-in-out";
-    document.body.appendChild(tooltip);
-    return tooltip;
-}
-
-function showTooltip(tooltip, event) {
-    tooltip.style.visibility = "visible";
-    tooltip.style.opacity = "1";
-    tooltip.style.left = event.pageX + 10 + 'px';
-    tooltip.style.top = event.pageY + 10 + 'px';
-}
-
-
-function hideTooltip(tooltip) {
-    tooltip.style.opacity = "0";
-    setTimeout(function() {
-        tooltip.style.visibility = "hidden";
-        document.body.removeChild(tooltip);
-    }, 300);
-}
-
-
-document.querySelectorAll('.button').forEach(button => {
-    let tooltip;
-
-    button.addEventListener('mouseover', function(event) {
-        const tooltipText = button.getAttribute('data-tooltip');
-        tooltip = createTooltip(tooltipText);
-        showTooltip(tooltip, event);
-    });
-
-    button.addEventListener('mouseout', function() {
-        hideTooltip(tooltip);
-    });
-});
-
 
 var intervalID = setInterval(function() {
-    gainMoney(stats.moneyPerSecond);
+    spawnSquare();
 }, stats.tickDelay);
 
 function setTickDelay(tickDelay) {
     stats.tickDelay = tickDelay;
     clearInterval(intervalID);
     intervalID = setInterval(function() {
-        gainMoney(stats.moneyPerSecond);
+        spawnSquare();
     }, stats.tickDelay);
-}
-
-function clicker() {
-    var timeNow = Date.now();
-    if (typeof clicker.lastCall === "undefined" || timeNow - clicker.lastCall > 1000 / stats.allowedCPS) {
-        clicker.lastCall = timeNow;
-        var crit = Math.random() < stats.clickCritChance;
-        var moneyGained = stats.moneyPerClick * (crit ? 2 : 1);
-        gainMoney(moneyGained);
-        if (crit) {
-            var clickerButton = document.querySelector(".game .button button");
-            if (clickerButton) {
-                clickerButton.style.color = "red";
-                setTimeout(function() {
-                    clickerButton.style.color = "white";
-                }, 100);
-            }
-        }
-        updateStats();
-    }
-    updateProgress(stats.moneyPerClick);
 }
 
 function updateProgress(i) {
@@ -290,7 +370,7 @@ function updateProgress(i) {
         leveling.exp = leveling.expToNext;
         return;
     }
-    leveling.exp += i;
+    leveling.exp += Math.round(i * leveling.expMultiplier);
     while (leveling.exp >= leveling.expToNext) {
         if (leveling.level >= leveling.maxLevel) {
             return;
@@ -300,6 +380,7 @@ function updateProgress(i) {
         leveling.expToNext = Math.round(leveling.expToNext * 1.1);
         progress.max = leveling.expToNext;
         progress.value = leveling.exp;
+        loadUpgrades();
     }
 
 }
@@ -349,40 +430,66 @@ function updateStats() {
     const moneyFormatted = formatNumber(stats.money, numberType);
     document.getElementById("money").innerHTML = "Money: $" + moneyFormatted;
 
-    const moneyPerSecondFormatted = formatNumber(Math.round(stats.moneyPerSecond * 1000 / stats.tickDelay), numberType);
-    document.getElementById("moneyPerSecond").innerHTML = "$/s: " + moneyPerSecondFormatted;
 
-    const moneyPerClickFormatted = formatNumber(stats.moneyPerClick, numberType);
-    document.getElementById("moneyPerClick").innerHTML = "$/click: " + moneyPerClickFormatted;
+    document.getElementById("diamonds").innerHTML = "Diamonds: " + stats.diamonds;
 
-    document.getElementById("allowedCPS").innerHTML = "Allowed CPS: " + stats.allowedCPS;
+    document.getElementById("spawnCount").innerHTML = "Spawn Count: " + spawnCount + "/" + stats.spawnLimit;
 
     document.getElementById("tickDelay").innerHTML = "Tick Delay: " + stats.tickDelay;
 
     document.getElementById("level").innerHTML = "Level: " + leveling.level;
     const expFormatted = formatNumber(leveling.exp, numberType);
     document.getElementById("exp").innerHTML = "Exp: " + expFormatted;
-    document.getElementById("expToNext").innerHTML = "Exp to next: " + leveling.expToNext;
+    const expToNextFormatted = formatNumber(leveling.expToNext, numberType);
+    document.getElementById("expToNext").innerHTML = "Exp to next: " + expToNextFormatted;
 
     document.getElementById("progress").value = leveling.exp;
     document.getElementById("progress").max = leveling.expToNext;
+
+    for (let i = 1; i <= Object.keys(upgrades).length; i++) {
+        const upgrade = upgrades[i];
+        if (upgrade && upgrade.number >= upgrade.limit) {
+            continue;
+        }
+        const progress = document.getElementById("upg" + i + "Progress");
+        if (progress) {
+            progress.value = upgrade.limit - upgrade.number;
+        }
+    }
+
+    music.volume = config.volume;
+
+
+    for (let i = 1; i <= Object.keys(achivements).length; i++) {
+        const achivement = achivements[i];
+        const achivementDone = document.querySelector("#ach" + i);
+        if (achivementDone) {
+            if (achivement.done) {
+                achivementDone.querySelector("#ach" + i + "Done").innerText = "Done";
+            } else {
+                achivementDone.querySelector("#ach" + i + "Done").innerText = "Not done";
+            }
+        }
+    }
 }
 
 function buyUpgrade(i) {
-    if (stats.money >= upgrades[i].price && !upgrades[i].bought) {
+    if (stats.money >= upgrades[i].price && upgrades[i].number <= upgrades[i].limit) {
         if (upgrades[i].limit > 0) {
             const effectFunction = new Function('return ' + upgrades[i].effect)();
             effectFunction();
+            upgrades[i].number++;
             stats.money -= upgrades[i].price;
             let oldPrice = upgrades[i].price / 2;
             upgrades[i].price = Math.round(upgrades[i].price * (1 + stats.upgPriceMultiplier) - oldPrice);
-            document.getElementById("upgrade" + i).innerHTML = upgrades[i].name + " | " + upgrades[i].price + "$";
-            upgrades[i].limit--;
-            if (upgrades[i].limit <= 0) {
+            document.querySelector("#upg" + i + " p:nth-child(2)").innerText = upgrades[i].name;
+            document.querySelector("#upg" + i + " p:nth-child(3)").innerText = upgrades[i].description;
+            document.querySelector("#upg" + i + " p:nth-child(4)").innerText = "Price: $" + upgrades[i].price;
+            if (upgrades[i].number >= upgrades[i].limit) {
                 document.getElementById("upg" + i).remove();
-                upgrades[i].bought = true;
             }
             updateStats();
+            checkAchievements();
         }
     }
 }
@@ -392,6 +499,8 @@ function save() {
         stats: stats,
         leveling: leveling,
         upgrades: upgrades,
+        achivements: achivements,
+        config: config
     }), "12345").toString();
     var textArea = document.createElement("textarea");
     textArea.value = encrypted;
@@ -422,6 +531,8 @@ function loadFromInput() {
     stats = json.stats;
     leveling = json.leveling;
     upgrades = json.upgrades;
+    achivements = json.achivements;
+    config = json.config;
     updateStats();
     document.querySelector(".modal").remove();
 }
