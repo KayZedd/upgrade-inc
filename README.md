@@ -62,6 +62,7 @@ Or Play it online
 - [ ] **Add sound effects** 🔊: Make the game more engaging with click sounds and upgrade sounds.
 - [ ] **Add Minigames 🏃‍♂️**: Add some minigames to add some difficulty
 - [ ] **Fix Economy 💰**: Cuz its kinda bad
+- [ ] **Fix Tooltips** 🛠️: Fix them.
 
 ## License 📜
 

@@ -25,7 +25,7 @@ var upgrades = {
         price: 10,
         limit: 10,
         bought: false,
-        effect: function() { stats.moneyPerClick += 10; }
+        effect: "function() { stats.moneyPerClick += 10; }"
     },
     2: {
         name: "Better Air",
@@ -33,7 +33,7 @@ var upgrades = {
         price: 10,
         limit: 10,
         bought: false,
-        effect: function() { stats.moneyPerSecond += 10; }
+        effect: "function() { stats.moneyPerSecond += 10; }"
     },
     3: {
         name: "Sweat Metter",
@@ -41,7 +41,7 @@ var upgrades = {
         price: 10,
         limit: 20,
         bought: false,
-        effect: function() { stats.allowedCPS += 1; }
+        effect: "function() { stats.allowedCPS += 1; }"
     },
     4: {
         name: "Stopwatch",
@@ -49,7 +49,7 @@ var upgrades = {
         price: 10,
         limit: 5,
         bought: false,
-        effect: function() { stats.tickDelay -= 100; setTickDelay(stats.tickDelay); }
+        effect: "function() { stats.tickDelay -= 100; setTickDelay(stats.tickDelay); }"
     },
     5: {
         name: "Tab Name",
@@ -57,14 +57,7 @@ var upgrades = {
         price: 1000,
         limit: 1,
         bought: false,
-        effect: function() { 
-            stats.moneyPerClick += 10; 
-            document.title = "Upgrade INC ";  
-            var favicon = document.createElement('link'); 
-            favicon.rel = 'icon'; 
-            favicon.href = 'assets/favicon-32x32.png'; 
-            document.head.appendChild(favicon); 
-        }
+        effect: "function() { stats.moneyPerClick += 10; document.title = 'Upgrade INC ';  var favicon = document.createElement('link'); favicon.rel = 'icon'; favicon.href = 'assets/favicon-32x32.png'; document.head.appendChild(favicon); }"
     },
     6: {
         name: "UI Revamp",
@@ -72,7 +65,7 @@ var upgrades = {
         price: 10000,
         limit: 1,
         bought: false,
-        effect: function() { stats.moneyPerSecond += 10; }
+        effect: "function() { stats.moneyPerSecond += 10; }"
     },
     7: {
         name: "Golden Click",
@@ -80,7 +73,7 @@ var upgrades = {
         price: 100,
         limit: 10,
         bought: false,
-        effect: function() { stats.clickCritChance += 0.05; }
+        effect: "function() { stats.clickCritChance += 0.05; }"
     }
 };
 
@@ -378,7 +371,8 @@ function updateStats() {
 function buyUpgrade(i) {
     if (stats.money >= upgrades[i].price && !upgrades[i].bought) {
         if (upgrades[i].limit > 0) {
-            upgrades[i].effect();
+            const effectFunction = new Function('return ' + upgrades[i].effect)();
+            effectFunction();
             stats.money -= upgrades[i].price;
             let oldPrice = upgrades[i].price / 2;
             upgrades[i].price = Math.round(upgrades[i].price * (1 + stats.upgPriceMultiplier) - oldPrice);
@@ -424,6 +418,7 @@ function loadFromInput() {
     var encrypted = document.getElementById("loadInput").value;
     var bytes = CryptoJS.AES.decrypt(encrypted, "12345");
     var json = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    console.log(json);
     stats = json.stats;
     leveling = json.leveling;
     upgrades = json.upgrades;
