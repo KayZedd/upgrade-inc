@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
+    <script src="script.js"></script>
+    <title>Unknown</title>
+</head>
+<body class="body">
+    <div class="main">
+        <div class="options">
+            <button class="button" id="achivements" onclick="showAchivements()">Achivements</button>
+            <button class="button" data-tooltip="Save your progress" onclick="save()">Save</button>
+            <button class="button" data-tooltip="Load saved data" onclick="load()">Load</button>            
+            <button class="button" onclick="reset()">Reset</button>
+            <button class="button" onclick="stats.money += 1000000">Cheat</button>
+            <select class="select" name="numberType" onchange="config.numberType = this.value; updateStats()">
+                <option value="exponential">Exponential</option>
+                <option value="fixed">Fixed</option>
+                <option value="round" selected>Rounded</option>
+                <option value="scientific">Scientific</option>
+                <option value="engineering">Engineering</option>
+                <option value="compact">Compact</option>
+                <option value="suffix">Suffix (e.g., K, M, B)</option>
+            </select>
+        </div>
+        <hr>        
+        <div class="stats">
+            <div class="progress">
+                <p id="level">Level: 0</p>
+                <progress id="progress" value="0" max="100"></progress>
+                <p id="exp">Exp: 0</p>
+                <p id="expToNext">Exp to next: 0</p>
+            </div>
+            <br>
+            <p id="diamonds">Diamonds: 0</p>
+            <p id="money">Money: $0</p>
+            <p id="moneyPerSecond">$/s: 0</p>
+            <p id="moneyPerClick">$/click: 0</p>
+            <p id="critChance"></p>
+            <br>
+            <p id="allowedCPS">Allowed CPS: 0</p>
+            <p id="tickDelay">Tick Delay: 0</p>
+        </div>
+        <div class="upgrades">
+
+        </div>
+        <div class="game">
+            <div class="button">
+                <button class="button" onclick="clicker()">Click me!</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

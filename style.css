@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    background-color: #3a3a3a;
+    color: white;
+}
+
+button {
+    background-color: #3a3a3a;
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s, transform 0.2s;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: rgb(10, 10, 10);
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.achievements {
+    background: rgba(29, 29, 29, 0.44);
+    border-radius: 5px;
+    position: fixed;
+    top: 60%;
+    left: 1%;
+    z-index: 9999;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.achievements .achievement {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+    background-color: rgba(29, 29, 29, 0.44);
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1000;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.upgradeButton:hover + .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+#progress {
+    background-color: rgba(29, 29, 29, 0.44);
+    color: teal;
+    padding: 5px;
+    margin: 5px;
+    transition: width 0.5s ease;
+}
+
+.achievement-popup {
+    position: fixed;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.achievement-popup h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.achievement-popup p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.achievement-prog progress {
+    background-color: rgba(29, 29, 29, 0.44);
+    color: teal;
+    width: 100%;
+    padding: 5px;
+    margin: 5px;
+}
+
+.select {
+    background-color: #3a3a3a;
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.select option {
+    background-color: rgba(29, 29, 29, 0.44);
+    color: white;
+}
+
+.progress {
+    background-color: rgba(29, 29, 29, 0.44);
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.upgrades {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: rgba(29, 29, 29, 0.44);
+    padding: 10px;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(20, 20, 20, 0.44);
+    padding: 10px;
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+    background-color: rgba(14, 14, 14, 0.44);
+    margin-bottom: 5px;
+}
+
+.game {
+    display: flex;
+ flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
