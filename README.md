@@ -55,6 +55,7 @@ Welcome to the Upgrade INC.
 - [ ] **Add more upgrades** 🔧: New upgrades to boost the gameplay.
 - [ ] **Add sound effects** 🔊: Make the game more engaging with click sounds and upgrade sounds.
 - [ ] **Add Minigames 🏃‍♂️**: Add some minigames to add some difficulty
+- [ ] **Fix Economy 💰**: Cuz its kinda bad
 
 ## License 📜
 
