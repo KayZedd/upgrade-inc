@@ -46,8 +46,14 @@ Welcome to the Upgrade INC.
 
 ## Installation 💻
 
+Download it from GitHub
+
 1. Clone the repository or download the game files.
 2. Open the HTML file in your browser to start playing.
+
+Or Play it online
+1. https://kayzedd.github.io/upgrade-inc/
+
 
 ## TODO 📋
 
